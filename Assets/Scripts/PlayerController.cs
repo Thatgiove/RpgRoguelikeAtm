@@ -4,22 +4,18 @@ using UnityEngine;
 public class PlayerController : Character
 {
     [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 5f;
-    [SerializeField] GameObject projectile;
-    [SerializeField] GameObject level;
-
-   
     Rigidbody2D rb;
-    
+
+    public Weapon weapon;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         //InvokeRepeating("Shoot", 1.0f, 1f);
-        var d = FindObjectOfType<DungeonManager>();
-        if (d)
+        var dm = FindObjectOfType<DungeonManager>();
+        if (dm)
         {
-            transform.position = d.spawnPoint;
+            transform.position = dm.spawnPoint;
         }
 
     }
@@ -59,10 +55,13 @@ public class PlayerController : Character
         //worldPosition.z= 0;
         //print(worldPosition);
 
-        if (projectile)
+        //if (projectile)
+        //{
+        //    Instantiate(projectile, transform.GetChild(0).transform.position + (transform.GetChild(0).transform.up * 1.2f ), transform.GetChild(0).transform.rotation);
+        //}
+        if (weapon)
         {
-            Instantiate(projectile, transform.GetChild(0).transform.position + (transform.GetChild(0).transform.up * 1.2f ), transform.GetChild(0).transform.rotation);
-
+            weapon.Attack();
         }
     }
 

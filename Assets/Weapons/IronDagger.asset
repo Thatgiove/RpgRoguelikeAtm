@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5015da962a7bb45b0ed3d5fb440c84, type: 3}
+  m_Name: IronDagger
+  m_EditorClassIdentifier: 
+  weaponName: Iron Dagger
+  image: {fileID: 21300000, guid: c19b40515ac1fde478cea9e526e2e6d7, type: 3}
+  type: melee
+  level: 1
+  minDamage: 1
+  maxDamage: 10
+  attackTime: 1
+  distance: 1
+  critical: 1
+  projectile: {fileID: 1023585390548736919, guid: df0055c68eef6c04e9d0d6743d9a83c4, type: 3}
