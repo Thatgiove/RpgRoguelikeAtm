@@ -11,6 +11,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject room;
     [SerializeField] GameObject level;
     [SerializeField] GameObject enemy; //TODO togliere 
+    [SerializeField] GameObject weaponTemplate;
 
     [SerializeField] GameObject gameArea;
 
@@ -32,6 +33,8 @@ public class DungeonManager : MonoBehaviour
         GeneratePathFinding();
     }
 
+
+
     void GenerateDungeon()
     {
 
@@ -51,6 +54,7 @@ public class DungeonManager : MonoBehaviour
                           _room.transform.position.x + (i * YOffset),
                            _room.transform.position.y + (j * YOffset));
                 cu += _room.transform.position;
+
                 if (i == (rows / 2) && j == (cols / 2))
                 {
                     spawnPoint = _room.transform.position;
@@ -61,6 +65,7 @@ public class DungeonManager : MonoBehaviour
                     _room.transform.parent = level.transform;
                 }
 
+                GenerateWeapon(_room.transform.GetChild(0).transform.position);
                 //if (FlipCoinHead())
                 //{
                 //    if (enemy)
@@ -112,6 +117,17 @@ public class DungeonManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    //TODO - per questione di ordine devono essere tutte figlie di un gameObj
+    void GenerateWeapon(Vector3 pos)
+    {
+        if (!weaponTemplate) return;
+
+        if (FlipCoinHead())
+        {
+            Instantiate(weaponTemplate, pos, Quaternion.identity);
+        }
     }
 
     bool FlipCoinHead()

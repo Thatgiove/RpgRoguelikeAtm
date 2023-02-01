@@ -1,20 +1,27 @@
+using System.Linq;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] WeaponData weaponData;
+    WeaponData weaponData;
     SpriteRenderer sr;
     PlayerController pc;
 
     private void Start()
     {
-        if (weaponData == null) return;
         pc = FindObjectOfType<PlayerController>();
         sr = GetComponent<SpriteRenderer>();
-        if (sr && weaponData)
+        
+        //TODO test carico tutte le prefab e le assegno a caso alle armi
+        //valutare se fare un manager
+        WeaponData[] wd = Resources.LoadAll("Weapons", typeof(WeaponData)).Cast<WeaponData>().ToArray();
+
+        if (wd.Length > 0 && sr)
         {
+            weaponData = wd[Random.Range(0, wd.Length)];
             sr.sprite = weaponData.image;
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
