@@ -1,52 +1,45 @@
-using System.Linq;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    WeaponData weaponData;
-    SpriteRenderer sr;
+    [SerializeField] bool equipped = false;
+    [SerializeField] WeaponData weaponData;
+    WeaponManager wm;
     PlayerController pc;
 
     private void Start()
     {
         pc = FindObjectOfType<PlayerController>();
-        sr = GetComponent<SpriteRenderer>();
-        
-        //TODO test carico tutte le prefab e le assegno a caso alle armi
-        //valutare se fare un manager
-        WeaponData[] wd = Resources.LoadAll("Weapons", typeof(WeaponData)).Cast<WeaponData>().ToArray();
-
-        if (wd.Length > 0 && sr)
-        {
-            weaponData = wd[Random.Range(0, wd.Length)];
-            sr.sprite = weaponData.image;
-        }
-
+        wm = FindObjectOfType<WeaponManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
         var player = collision.gameObject.GetComponent<PlayerController>();
+
         if (player)
         {
-            if(player.weapon == this)
+            if (player.weapon != null) 
             {
-                return;
+                Drop(player.weapon);
             }
-            else
-            {
-                if(player.weapon != null)
-                {
-                    player.weapon.sr.enabled = true;
-                }
-                sr.enabled = false;
-                print(weaponData.weaponName);
-                player.weapon = this;
-            }
-
+            player.weapon = this;
+            equipped = true;
+            wm.ToggleWeaponVisibility(this, false);
         }
     }
+
+    //droppa l'arma
+    void Drop(Weapon w)
+    {
+        w.transform.position = new Vector3(
+            pc.transform.position.x + 1.5f, 
+            pc.transform.position.y ,
+            pc.transform.position.z);
+
+        wm.ToggleWeaponVisibility(w, true);
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         //var player = collision.gameObject.GetComponent<PlayerController>();
@@ -55,10 +48,13 @@ public class Weapon : MonoBehaviour
         //    player.weapon = null;
         //}
     }
-
+    public void SetWeaponData(WeaponData wd)
+    {
+        weaponData = wd;
+    }
     public void Attack()
     {
-        print(weaponData.maxDamage);
+        print(weaponData.weaponName);
         if (weaponData.projectile)
             Instantiate(weaponData.projectile, pc.transform.GetChild(0).transform.position + (pc.transform.GetChild(0).transform.up * 1.2f), pc.transform.GetChild(0).transform.rotation);
     }

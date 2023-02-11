@@ -1,5 +1,4 @@
 using Pathfinding;
-using System.Drawing;
 using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
@@ -11,10 +10,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject room;
     [SerializeField] GameObject level;
     [SerializeField] GameObject enemy; //TODO togliere 
-    [SerializeField] GameObject weaponTemplate;
-
     [SerializeField] GameObject gameArea;
-
     public Vector3 spawnPoint = Vector3.zero;
     public GameObject test;
 
@@ -65,7 +61,10 @@ public class DungeonManager : MonoBehaviour
                     _room.transform.parent = level.transform;
                 }
 
-                GenerateWeapon(_room.transform.GetChild(0).transform.position);
+                if (FlipCoinHead())
+                    FindObjectOfType<WeaponManager>()?
+                        .GenerateWeapon(_room.transform.GetChild(0).transform.position);
+
                 //if (FlipCoinHead())
                 //{
                 //    if (enemy)
@@ -117,17 +116,6 @@ public class DungeonManager : MonoBehaviour
     void Update()
     {
 
-    }
-
-    //TODO - per questione di ordine devono essere tutte figlie di un gameObj
-    void GenerateWeapon(Vector3 pos)
-    {
-        if (!weaponTemplate) return;
-
-        if (FlipCoinHead())
-        {
-            Instantiate(weaponTemplate, pos, Quaternion.identity);
-        }
     }
 
     bool FlipCoinHead()
